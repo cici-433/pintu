@@ -7,10 +7,15 @@
     <title>旧时光照相馆 - UI原型</title>
     <style>
         :root {
-            --paper-color: #f4e4bc;
-            --ink-color: #3e3226;
-            --accent-color: #8b5a2b;
+            --paper-color: #f2e7d6;
+            --paper-color-2: #eadcc6;
+            --ink-color: #3a332c;
+            --ink-soft: rgba(58, 51, 44, 0.45);
+            --accent-color: #b98a4c;
+            --accent-blue: #4f88ab;
+            --accent-orange: #f0aa3e;
             --highlight-color: #d45d3e;
+            --ui-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
         }
 
         body {
@@ -28,14 +33,15 @@
 
         /* 手机外壳模拟 */
         .phone-mockup {
-            width: 375px;
-            height: 667px;
+            width: 390px;
+            height: 844px;
             background-color: var(--paper-color);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--ui-shadow);
             /* 老照片纹理叠加 */
             background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.1"/></svg>');
+            background-blend-mode: multiply;
         }
 
         /* 通用样式 */
@@ -47,7 +53,7 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 0;
             box-sizing: border-box;
             transition: transform 0.3s ease;
         }
@@ -112,18 +118,331 @@
             background: rgba(255, 255, 255, 0.8);
         }
 
-        /* 首页 */
-        #main-menu {
-            justify-content: center;
+        /* 首页/游戏：按截图风格重构 */
+        .paper-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(1200px 900px at 50% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.1) 55%, rgba(0, 0, 0, 0.08) 100%),
+                linear-gradient(180deg, rgba(234, 220, 198, 0.85) 0%, rgba(242, 231, 214, 0.95) 40%, rgba(242, 231, 214, 0.95) 100%);
+            filter: saturate(0.95) contrast(1.02);
         }
 
-        .logo-subtitle {
-            text-align: center;
-            font-style: italic;
-            margin-top: -20px;
-            margin-bottom: 60px;
+        .screen-home {
+            justify-content: flex-end;
+        }
+
+        .home-illustration {
+            position: absolute;
+            inset: 96px 0 120px 0;
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0) 30%),
+                radial-gradient(900px 700px at 65% 35%, rgba(90, 70, 40, 0.22) 0%, rgba(90, 70, 40, 0) 60%),
+                linear-gradient(180deg, rgba(232, 220, 200, 0) 0%, rgba(232, 220, 200, 0) 65%, rgba(232, 220, 200, 0.7) 100%);
+            opacity: 0.75;
+        }
+
+        .safe {
+            position: relative;
+            height: 100%;
+            padding: 18px 16px 16px;
+            box-sizing: border-box;
+        }
+
+        .home-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .pill-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pill {
+            height: 28px;
+            padding: 0 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            background: rgba(60, 60, 60, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.22) inset;
+            color: rgba(255, 255, 255, 0.92);
+            font-family: system-ui, -apple-system, "PingFang SC", "Songti SC", serif;
             font-size: 14px;
-            opacity: 0.8;
+            letter-spacing: 0.2px;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        .pill .dot-sep {
+            width: 1px;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .icon-btn {
+            width: 52px;
+            height: 28px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.35);
+            color: rgba(40, 35, 28, 0.8);
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+        }
+
+        .pill-heart {
+            width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, #ff8a8a 0%, #e23a3a 65%, #c22525 100%);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+        }
+
+        .pill-photo {
+            width: 18px;
+            height: 12px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.32);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .pill-plus {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            background: linear-gradient(180deg, rgba(216, 184, 110, 0.95) 0%, rgba(190, 148, 70, 0.95) 100%);
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .pill-countdown {
+            font-size: 12px;
+            opacity: 0.9;
+            white-space: nowrap;
+            display: none;
+        }
+
+        .side-stack {
+            position: absolute;
+            left: 14px;
+            top: 98px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .side-item {
+            width: 62px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .side-circle {
+            width: 52px;
+            height: 52px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 2px solid rgba(90, 80, 60, 0.35);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: rgba(60, 50, 35, 0.8);
+            font-size: 24px;
+        }
+
+        .side-label {
+            font-size: 12px;
+            color: rgba(50, 40, 30, 0.8);
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .reward {
+            position: absolute;
+            right: 18px;
+            top: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            z-index: 10;
+        }
+
+        .reward-badge {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 2px solid rgba(90, 80, 60, 0.35);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(60, 50, 35, 0.8);
+            font-size: 28px;
+        }
+
+        .cta-stack {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 138px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            z-index: 10;
+        }
+
+        .cta-btn {
+            width: 290px;
+            height: 64px;
+            border-radius: 18px;
+            border: 2px solid rgba(60, 50, 35, 0.35);
+            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.18);
+            font-family: "Songti SC", "SimSun", serif;
+            font-size: 22px;
+            letter-spacing: 2px;
+            color: rgba(40, 30, 20, 0.9);
+            cursor: pointer;
+        }
+
+        .cta-orange {
+            background: linear-gradient(180deg, rgba(245, 191, 86, 1) 0%, rgba(234, 160, 54, 1) 100%);
+        }
+
+        .cta-blue {
+            background: linear-gradient(180deg, rgba(121, 170, 198, 1) 0%, rgba(79, 136, 171, 1) 100%);
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .tabbar {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 96px;
+            background: linear-gradient(180deg, rgba(234, 220, 198, 0.05) 0%, rgba(234, 220, 198, 0.88) 55%, rgba(234, 220, 198, 0.98) 100%);
+            border-top: 1px solid rgba(60, 50, 35, 0.2);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 10px 12px 14px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .tab {
+            width: 92px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            border: 0;
+            background: transparent;
+            font-family: "Songti SC", "SimSun", serif;
+            color: rgba(60, 50, 35, 0.75);
+            cursor: pointer;
+        }
+
+        .tab .tab-icon {
+            width: 54px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(120, 100, 70, 0.18);
+            border: 2px solid rgba(60, 50, 35, 0.25);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .tab.active .tab-icon {
+            background: rgba(120, 100, 70, 0.32);
+            border-color: rgba(60, 50, 35, 0.35);
+        }
+
+        .tab .tab-label {
+            font-size: 14px;
+        }
+
+        .screen-game .game-header {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 14px;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .level-pill {
+            min-width: 170px;
+            height: 44px;
+            padding: 0 18px;
+            border-radius: 14px;
+            background: linear-gradient(180deg, rgba(244, 236, 220, 0.95) 0%, rgba(232, 220, 198, 0.95) 100%);
+            border: 2px solid rgba(90, 80, 60, 0.35);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Songti SC", "SimSun", serif;
+            font-size: 22px;
+            color: rgba(40, 30, 20, 0.9);
+            pointer-events: auto;
+        }
+
+        .game-time {
+            position: absolute;
+            top: 66px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+            font-family: system-ui, -apple-system, "PingFang SC", sans-serif;
+            font-weight: 600;
+            color: rgba(60, 50, 35, 0.75);
+        }
+
+        .game-time #step-display {
+            display: none;
+        }
+
+        .screen-game .game-side-left {
+            position: absolute;
+            left: 14px;
+            top: 14px;
+            z-index: 10;
+        }
+
+        .screen-game .energy-hidden {
+            display: none !important;
         }
 
         /* 关卡选择 */
@@ -162,69 +481,103 @@
         }
 
         /* 游戏界面 */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--ink-color);
-            padding-bottom: 10px;
-        }
-
+        .top-bar,
         .status-bar {
-            display: flex;
-            justify-content: space-around;
-            background-color: #333;
-            color: #0f0;
-            /* LED绿 */
-            font-family: "Courier New", monospace;
-            padding: 5px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-weight: bold;
+            display: none;
         }
 
         .puzzle-board {
-            width: 300px;
-            height: 300px;
-            margin: 0 auto;
-            background-color: #ccc;
-            border: 4px solid var(--ink-color);
+            width: 330px;
+            height: 460px;
+            margin: 120px auto 0;
+            background-color: rgba(255, 255, 255, 0.55);
+            border: 2px solid rgba(60, 50, 35, 0.25);
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 2px;
-            background-color: var(--ink-color);
-            padding: 2px;
-            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+            gap: 6px;
+            padding: 8px;
+            border-radius: 16px;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
         }
 
         .puzzle-piece {
-            background-color: #e0d0b0;
+            background-color: rgba(255, 255, 255, 0.78);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
-            color: var(--ink-color);
+            color: rgba(60, 50, 35, 0.7);
             cursor: pointer;
             position: relative;
-            background-image: url('https://placehold.co/100x100/e0d0b0/3e3226?text=Image');
-            /* 占位符 */
-            background-size: 300px 300px;
+            border-radius: 10px;
+            border: 2px solid rgba(30, 20, 10, 0.7);
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.55));
+            box-shadow: 0 2px 0 rgba(255, 255, 255, 0.55) inset;
         }
 
         .puzzle-piece.empty {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px dashed rgba(60, 50, 35, 0.2);
             cursor: default;
         }
 
         /* 底部操作栏 */
         .bottom-actions {
-            margin-top: auto;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 16px;
             display: flex;
             justify-content: space-around;
-            padding-top: 20px;
+            align-items: flex-end;
+            padding: 0 12px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .tool {
+            width: 110px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            border: 0;
+            background: transparent;
+            font-family: "Songti SC", "SimSun", serif;
+            color: rgba(60, 50, 35, 0.75);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tool-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 2px solid rgba(90, 80, 60, 0.3);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .tool-badge {
+            position: absolute;
+            top: 4px;
+            right: 24px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: rgba(68, 94, 198, 0.95);
+            color: white;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
         }
 
         /* 弹窗 */
@@ -280,41 +633,51 @@
 
     <div class="phone-mockup">
         <div class="vignette"></div>
+        <div class="paper-bg"></div>
+        <div class="home-illustration"></div>
 
         <!-- 1. 首页 -->
-        <div id="main-menu" class="screen">
-            <!-- 剩余次数 (左上角) -->
-            <div id="energy-box"
-                style="position: absolute; top: 20px; left: 20px; font-size: 14px; border: 2px solid var(--ink-color); padding: 4px 10px; border-radius: 15px; background: rgba(244, 228, 188, 0.8); font-weight: bold; z-index: 10; display: flex; align-items: center; gap: 6px;">
-                <span>📷</span>
-                <span id="energy-display">剩余: 5/5</span>
-                <span id="energy-countdown" class="countdown-badge" style="font-size: 12px;"></span>
-                <button id="energy-plus" onclick="openEnergyModal()" class="countdown-badge"
-                    style="font-size: 12px; cursor: pointer;">
-                    🎞️ ＋
-                </button>
-            </div>
+        <div id="main-menu" class="screen screen-home">
+            <div class="safe">
+                <div class="home-top">
+                    <div class="pill-row">
+                        <div id="energy-box" class="pill">
+                            <span class="pill-heart"></span>
+                            <span id="energy-display">5</span>
+                            <span style="opacity:0.8;">/5</span>
+                            <button id="energy-plus" class="pill-plus" onclick="openEnergyModal()">+</button>
+                            <span id="energy-countdown" class="pill-countdown"></span>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- 设置按钮 (移至剩余次数下方) -->
-            <div style="position: absolute; top: 60px; left: 20px; font-size: 24px; cursor: pointer; z-index: 10;"
-                onclick="showSettings()">
-                ⚙️
-            </div>
+                <div class="side-stack">
+                    <div class="side-item">
+                        <div class="side-circle" onclick="showSettings()">⚙</div>
+                        <div class="side-label">设置</div>
+                    </div>
+                </div>
 
-            <h1 style="margin-top: 80px; font-size: 32px; letter-spacing: 2px;">旧时光照相馆</h1>
-            <div class="logo-subtitle">Old Time Studio</div>
+                <div class="cta-stack">
+                    <button class="cta-btn cta-orange" onclick="checkEnergyAndStart()">开始游戏</button>
+                    <button class="cta-btn cta-blue" onclick="showGallery()">相册</button>
+                </div>
 
-            <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center;">
-                <div
-                    style="width: 120px; height: 120px; border: 4px solid var(--ink-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 40px;">
-                    <span style="font-size: 40px;">📷</span>
+                <div class="tabbar">
+                    <button class="tab" onclick="showGallery()">
+                        <div class="tab-icon">📒</div>
+                        <div class="tab-label">相册</div>
+                    </button>
+                    <button class="tab active" onclick="showScreen('main-menu')">
+                        <div class="tab-icon">🏠</div>
+                        <div class="tab-label">首页</div>
+                    </button>
+                    <button class="tab" onclick="alert('暂未开放')">
+                        <div class="tab-icon">📷</div>
+                        <div class="tab-label">年代回忆</div>
+                    </button>
                 </div>
             </div>
-
-            <button class="btn" onclick="checkEnergyAndStart()">开 始 游 戏</button>
-            <button class="btn" style="background-color: transparent;" onclick="showGallery()">我 的 相 册</button>
-
-            <div style="margin-top: 40px; font-size: 12px; text-align: center; opacity: 0.6;">(C) 1980s Memory Co.</div>
         </div>
 
         <!-- 2. 关卡选择 (开始营业) -->
@@ -348,38 +711,51 @@
         </div>
 
         <!-- 4. 游戏界面 -->
-        <div id="gameplay" class="screen hidden">
-            <div id="energy-box-game"
-                style="position: absolute; top: 20px; right: 20px; font-size: 14px; border: 2px solid var(--ink-color); padding: 4px 10px; border-radius: 15px; background: rgba(244, 228, 188, 0.8); font-weight: bold; z-index: 10; display: flex; align-items: center; gap: 6px;">
-                <span>📷</span>
-                <span id="energy-display-game">剩余: 5/5</span>
-                <span id="energy-countdown-game" class="countdown-badge" style="font-size: 12px;"></span>
-                <button id="energy-plus-game" onclick="openEnergyModal()" class="countdown-badge"
-                    style="font-size: 12px; cursor: pointer; display:none;">
-                    🎞️ ＋
-                </button>
-            </div>
-            <div class="top-bar">
-                <button class="btn btn-small" onclick="showScreen('main-menu')">← 放弃</button>
-                <div style="font-weight: bold;">第 1-1 关</div>
-                <button class="btn btn-small" onclick="showPreview()">?</button>
-            </div>
+        <div id="gameplay" class="screen screen-game hidden">
+            <div class="safe">
+                <div id="energy-box-game" class="pill energy-hidden">
+                    <span class="pill-heart"></span>
+                    <span id="energy-display-game">5</span>
+                    <span style="opacity:0.8;">/5</span>
+                    <button id="energy-plus-game" class="pill-plus" onclick="openEnergyModal()">+</button>
+                    <span id="energy-countdown-game" class="pill-countdown"></span>
+                </div>
 
-            <div class="status-bar">
-                <span id="time-display">TIME: 00:00</span>
-                <span id="step-display">STEP: 0</span>
-            </div>
+                <div class="game-side-left">
+                    <div class="side-item">
+                        <div class="side-circle" onclick="showSettings()">⚙</div>
+                        <div class="side-label">设置</div>
+                    </div>
+                </div>
 
-            <!-- 拼图区域 (动态生成) -->
-            <div id="board" class="puzzle-board">
-                <!-- JS 会填充这里 -->
-            </div>
+                <div class="game-header">
+                    <div id="level-title" class="level-pill">第1关</div>
+                </div>
 
-            <div class="bottom-actions">
-                <button class="btn btn-small"
-                    onclick="initBoard(levels.find(l => l.id === currentLevelId).size)">重置</button>
-                <button class="btn btn-small" onclick="showPreview()">提示</button>
-                <button class="btn btn-small" onclick="showResult()">直接胜利</button> <!-- 测试用 -->
+                <div class="game-time">
+                    <span id="time-display">00:00</span>
+                    <span id="step-display">STEP: 0</span>
+                </div>
+
+                <div id="board" class="puzzle-board"></div>
+
+                <div class="bottom-actions">
+                    <button class="tool" onclick="showPreview()">
+                        <div class="tool-icon">💡</div>
+                        <div>提示</div>
+                        <div class="tool-badge">1</div>
+                    </button>
+                    <button class="tool" onclick="showPreview()">
+                        <div class="tool-icon">🖼</div>
+                        <div>拼图显示</div>
+                    </button>
+                    <button class="tool" onclick="alert('暂未开放')">
+                        <div class="tool-icon">❄</div>
+                        <div>冰冻</div>
+                        <div class="tool-badge">2</div>
+                    </button>
+                    <button style="display:none" onclick="showResult()">直接胜利</button>
+                </div>
             </div>
         </div>
 
@@ -451,7 +827,11 @@
                     用户ID: 8848
                 </div>
 
-                <button class="btn btn-small" style="margin-top: 20px;" onclick="hideSettings()">关 闭</button>
+                <div style="display:flex; gap:12px; justify-content:center; margin-top: 20px;">
+                    <button id="settings-back" class="btn btn-small hidden" onclick="exitGameFromSettings()">返
+                        回</button>
+                    <button class="btn btn-small" onclick="hideSettings()">关 闭</button>
+                </div>
             </div>
         </div>
 
@@ -511,6 +891,16 @@
             document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
             // 显示目标屏幕
             document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function exitGame() {
+            stopTimer();
+            showScreen('main-menu');
+        }
+
+        function exitGameFromSettings() {
+            hideSettings();
+            exitGame();
         }
 
         const LEVEL_COUNT = 100;
@@ -576,30 +966,16 @@
             const displayGame = document.getElementById('energy-display-game');
             const cdGame = document.getElementById('energy-countdown-game');
             const plusGame = document.getElementById('energy-plus-game');
-            display.innerText = `剩余: ${state.remaining}/${DAILY_MAX}`;
-            if (state.remaining < DAILY_MAX && state.lastRecoverAt) {
-                const nextTs = state.lastRecoverAt + RECOVER_INTERVAL_MS;
-                const now = Date.now();
-                const left = Math.max(0, nextTs - now);
-                cd.innerText = `🎞️ 下次恢复: ${formatMs(left)}`;
-            } else {
-                cd.innerText = '';
-            }
+            if (display) display.innerText = String(state.remaining);
+            if (cd) cd.innerText = '';
             if (plusHome) {
                 plusHome.style.display = state.remaining < DAILY_MAX ? 'inline-block' : 'none';
             }
             if (displayGame) {
-                displayGame.innerText = `剩余: ${state.remaining}/${DAILY_MAX}`;
+                displayGame.innerText = String(state.remaining);
             }
             if (cdGame) {
-                if (state.remaining < DAILY_MAX && state.lastRecoverAt) {
-                    const nextTs = state.lastRecoverAt + RECOVER_INTERVAL_MS;
-                    const now = Date.now();
-                    const left = Math.max(0, nextTs - now);
-                    cdGame.innerText = `🎞️ 下次恢复: ${formatMs(left)}`;
-                } else {
-                    cdGame.innerText = '';
-                }
+                cdGame.innerText = '';
             }
             if (plusGame) {
                 plusGame.style.display = state.remaining < DAILY_MAX ? 'inline-block' : 'none';
@@ -759,7 +1135,7 @@
             timerId = setInterval(() => {
                 const elapsed = Date.now() - startTs;
                 const timeEl = document.getElementById('time-display');
-                if (timeEl) timeEl.innerText = `TIME: ${formatTime(elapsed)}`;
+                if (timeEl) timeEl.innerText = formatTime(elapsed);
             }, 250);
         }
         function stopTimer() {
@@ -811,12 +1187,13 @@
             currentLevelId = levelId;
             const level = levels.find(l => l.id === levelId);
             showScreen('gameplay');
-            document.querySelector('#gameplay .top-bar div').innerText = `第 ${levelId} 关`;
+            const titleEl = document.getElementById('level-title');
+            if (titleEl) titleEl.innerText = `第${levelId}关`;
             stepCount = 0;
             const stepEl = document.getElementById('step-display');
             if (stepEl) stepEl.innerText = 'STEP: 0';
             const timeEl = document.getElementById('time-display');
-            if (timeEl) timeEl.innerText = 'TIME: 00:00';
+            if (timeEl) timeEl.innerText = '00:00';
             initBoard(level.size);
             startTimer();
         }
@@ -864,7 +1241,7 @@
                         stopTimer();
                         const resultTimeEl = document.getElementById('result-time');
                         if (resultTimeEl) {
-                            resultTimeEl.innerText = document.getElementById('time-display').innerText.replace('TIME: ', '');
+                            resultTimeEl.innerText = document.getElementById('time-display').innerText;
                         }
                         const resultStepEl = document.getElementById('result-step');
                         if (resultStepEl) {
@@ -909,6 +1286,9 @@
 
         function showSettings() {
             document.getElementById('settings-modal').classList.remove('hidden');
+            const backBtn = document.getElementById('settings-back');
+            const isInGame = !document.getElementById('gameplay').classList.contains('hidden');
+            if (backBtn) backBtn.classList.toggle('hidden', !isInGame);
         }
 
         function hideSettings() {
